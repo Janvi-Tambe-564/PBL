@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Emotion Detection</title>
+  </head>
+  <body bgcolor="#98F5FF">
+    <center>
+    <h1>Emotion Detection</h1>
+    {% if prediction_text %}
+      <p>{{ prediction_text }}</p>
+    {% else %}
+      <form method="POST" action="/predict">
+        <label for="time">Time:</label>
+        <input type="number" id="time" name="time" step="0.01" required><br><br>
+        <label for="heartbeat">Heartbeat:</label>
+        <input type="number" id="heartbeat" name="heartbeat" step="1" required><br><br>
+        <button type="submit">Predict</button>
+      </form>
+    {% endif %}
+</center>
+  </body>
+</html>
