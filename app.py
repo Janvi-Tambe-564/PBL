@@ -9,7 +9,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score
 app = Flask(__name__)
 
 # Load the dataset
-dataset = pd.read_csv(r'C:\Users\Tambe\OneDrive\Desktop\janvi\heart.csv')
+dataset = pd.read_csv(r'C:\Users\haris\OneDrive\Documents\GitHub\PBL\heart.csv')
 X = dataset.iloc[:, [2, 3]].values
 y = dataset.iloc[:, 4].values
 
@@ -32,18 +32,22 @@ def predict():
     time = float(request.form['time'])
     heartbeat = float(request.form['heartbeat'])
 
-    # Prepare the input data
-    input_data = np.array([[time, heartbeat]])
-    input_data = sc.transform(input_data)
-
-    # Make a prediction
-    prediction = classifier.predict(input_data)
-
-    # Display the output
-    if prediction[0] == 0:
-        output = "SAD"
+    # Check for extreme heart rate values
+    if heartbeat > 200 or heartbeat < 30:
+        output = "DEAD"
     else:
-        output = "HAPPY"
+        # Prepare the input data
+        input_data = np.array([[time, heartbeat]])
+        input_data = sc.transform(input_data)
+
+        # Make a prediction
+        prediction = classifier.predict(input_data)
+
+        # Display the output
+        if prediction[0] == 0:
+            output = "CALM"
+        elif prediction[0] == 1 :
+            output = "EXCITED"
 
     return render_template('index.html', prediction_text=output)
 
